@@ -21,6 +21,9 @@ let currentFigure = {
     col: 0
 };
 
+let gameSpeed = 4;
+let gameSpeedOverride = 0;
+
 const figures = [
     {
         color: 'red',
@@ -75,11 +78,6 @@ const figures = [
     },
 ];
 
-let x = 10;
-let y = 10;
-
-let gameSpeed = 100;
-
 function getFigure() {
     const index = Math.random() * figures.length | 0;
     currentFigure.obj = figures[index];
@@ -124,11 +122,16 @@ function update() {
         getFigure();
     }
 
-    setTimeout(update, gameSpeed);
+    const currentSpeed = gameSpeedOverride || gameSpeed;
+    setTimeout(update, 1000 / currentSpeed);
 }
 
 getFigure();
 update();
+
+setInterval(function() {
+    gameSpeed  += 1;
+}, 60 * 1000);
 
 window.addEventListener('keydown', function (ev) {
     if (ev.key === 'ArrowLeft') {
@@ -141,5 +144,17 @@ window.addEventListener('keydown', function (ev) {
         if (canMove) {
             currentFigure.col += 1;
         }
+    } else if(ev.key === 'ArrowDown') {
+        gameSpeedOverride = 50;
+    }
+});
+
+window.addEventListener('keyup', function(ev) {
+    if(ev.key === 'ArrowDown') {
+        gameSpeedOverride = 50;
+    } else if (ev.key === 'q') { // rotate counter-clockwise
+        currentFigure.obj.cells = getLeftRotation(currentFigure.obj.cells);
+    } else if (ev.key === 'w') { // rotate clockwise
+        currentFigure.obj.cells = getRightRotation(currentFigure.obj.cells);        
     }
 });
