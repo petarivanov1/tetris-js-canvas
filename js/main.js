@@ -1,28 +1,11 @@
 const TETRIS_ROWS = 18;
 const TETRIS_COLS = 10;
-const TETRIS_CELL_SIZE = 23;
+const TETRIS_CELL_SIZE = 20;
 
 const tetrisTable = Array.from({ length: TETRIS_ROWS })
     .map(() => Array.from({ length: TETRIS_COLS }).map(() => false));
 
 tetrisTable.push(Array.from({ length: TETRIS_COLS }).map(() => true));
-
-function getCellX(row) {
-    return TETRIS_CELL_SIZE * row;
-}
-
-function getCellY(col) {
-    return TETRIS_CELL_SIZE * col;
-}
-
-let currentFigure = {
-    obj: {},
-    row: 0,
-    col: 0
-};
-
-let gameSpeed = 4;
-let gameSpeedOverride = 0;
 
 const figures = [
     {
@@ -78,6 +61,23 @@ const figures = [
     },
 ];
 
+function getCellX(row) {
+    return TETRIS_CELL_SIZE * row;
+}
+
+function getCellY(col) {
+    return TETRIS_CELL_SIZE * col;
+}
+
+let currentFigure = {
+    obj: {},
+    row: 0,
+    col: 0
+};
+
+let gameSpeed = 4;
+let gameSpeedOverride = 0;
+
 function getFigure() {
     const index = Math.random() * figures.length | 0;
     currentFigure.obj = figures[index];
@@ -101,6 +101,9 @@ function checkForCollision(offsetRow, offsetCol, matrix) {
     }
     return false;
 }
+
+let score = 0;
+const scoreSystem = [0, 10, 15, 20, 25];
 
 function update() {
     let canFall = !checkForCollision(currentFigure.row + 1, currentFigure.col, currentFigure.obj.cells);
@@ -130,6 +133,8 @@ function update() {
             const emptyRow = Array.from({ length: TETRIS_COLS });
             tetrisTable.unshift(emptyRow);
         }
+
+        score += scoreSystem[filledRows.length];
 
         getFigure();
     }
