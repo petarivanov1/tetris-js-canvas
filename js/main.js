@@ -7,6 +7,20 @@ const tetrisTable = Array.from({ length: TETRIS_ROWS })
 
 tetrisTable.push(Array.from({ length: TETRIS_COLS }).map(() => true));
 
+function getCellX(row) {
+    return TETRIS_CELL_SIZE * row;
+}
+
+function getCellY(col) {
+    return TETRIS_CELL_SIZE * col;
+}
+
+let currentFigure = {
+    obj: {},
+    row: 0,
+    col: 0
+};
+
 const figures = [
     {
         color: 'red',
@@ -64,32 +78,21 @@ const figures = [
 let x = 10;
 let y = 10;
 
-function getCellX(row) {
-    return TETRIS_CELL_SIZE * row;
-}
-
-function getCellY(col) {
-    return TETRIS_CELL_SIZE * col;
-}
-
-let currentFigure = {
-    obj: {},
-    row: 0,
-    col: 0
-};
-
 let gameSpeed = 100;
 
 function getFigure() {
     const index = Math.random() * figures.length | 0;
     currentFigure.obj = figures[index];
-    currentFigure.row = 0;
+    currentFigure.row = -figures[index].cells.length;
     currentFigure.col = 0;
 }
 
 function checkForCollision(offsetRow, offsetCol) {
     for (let i = 0; i < currentFigure.obj.cells.length; i += 1) {
         const row = offsetRow + i;
+        if (row < 0) {
+            continue;
+        };
         for (let j = 0; j < currentFigure.obj.cells[i].length; j += 1) {
             const col = offsetCol + j;
 

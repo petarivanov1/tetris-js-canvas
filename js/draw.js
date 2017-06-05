@@ -23,7 +23,7 @@
                     continue;
                 }
 
-                context.fillRect(getCellX(col + i), getCellY(row + j), TETRIS_CELL_SIZE, TETRIS_CELL_SIZE);
+                context.fillRect(getCellY(col + j), getCellX(row + i), TETRIS_CELL_SIZE, TETRIS_CELL_SIZE);
             }
         }
     }
