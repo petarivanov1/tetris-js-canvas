@@ -15,3 +15,11 @@ function update() {
 }
 
 setInterval(update, 100);
+
+function getCellX(row) {
+    return TETRIS_CELL_SIZE * row;
+}
+
+function getCellY(col) {
+    return TETRIS_CELL_SIZE *col;
+}
