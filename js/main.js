@@ -108,6 +108,7 @@ function update() {
     if (canFall) {
         currentFigure.row += 1;
     } else {
+        const filledRows = [];
         for (let i = 0; i < currentFigure.obj.cells.length; i += 1) {
             const row = currentFigure.row + i;
             for (let j = 0; j < currentFigure.obj.cells[i].length; j += 1) {
@@ -117,13 +118,24 @@ function update() {
                     tetrisTable[row][col] = currentFigure.obj.color;
                 }
             }
+
+            const isRowFilled = tetrisTable[row].every(x => x);
+            if (isRowFilled) {
+                filledRows.push(row);
+            }
+        }
+
+        for (const row of filledRows) {
+            tetrisTable.splice(row, 1);
+            const emptyRow = Array.from({ length: TETRIS_COLS });
+            tetrisTable.unshift(emptyRow);
         }
 
         getFigure();
     }
 
-    const currentSpeed = gameSpeedOverride || gameSpeed;
-    setTimeout(update, 1000 / currentSpeed);
+    const currentSpeed = gameSpeedOverride || gameSpeed
+    setTimeout(update, 1000 / gameSpeed);
 }
 
 getFigure();
@@ -148,19 +160,20 @@ window.addEventListener('keydown', function (ev) {
         }
     } else if (ev.key === 'ArrowDown') {
         gameSpeedOverride = 50;
+    } else if (ev.key === 'q' || ev.key === 'w') {
+        const rotateFunc = (ev.key === 'q' ? getLeftRotation : getRightRotation);
+        const matrix = rotateFunc(currentFigure.obj.cells);
+
+        const canRotate = currentFigure.col >= 0 && currentFigure.col + matrix[0].length <= TETRIS_COLS &&
+            !checkForCollision(currentFigure.row, currentFigure.col, matrix);
+        if (canRotate) {
+            currentFigure.obj.cells = matrix;
+        }
     }
 });
 
 window.addEventListener('keyup', function (ev) {
     if (ev.key === 'ArrowDown') {
-        gameSpeedOverride = 50;
-    } else if (ev.key === 'q' || ev.key === 'w') {
-        const rotateFunc = (ev.key === 'q' ? getLeftRotation : getRightRotation);
-        const matrix = rotateFunc(currentFigure.obj.cells);
-
-        const canRotate = currentFigure.col >= 0 && currentFigure.col + matrix[0].length < TETRIS_COLS && !checkForCollision(currentFigure.row, currentFigure.col, matrix);
-        if (canRotate) {
-            currentFigure.obj.cells = matrix;
-        }
+        gameSpeedOverride = 0;
     }
 });
