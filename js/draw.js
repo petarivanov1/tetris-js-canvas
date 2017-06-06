@@ -10,7 +10,10 @@
         });
 
     canvas.width = 800;
-    canvas.height = 600;
+    canvas.height = getCellY(TETRIS_ROWS);
+    
+    canvas.style.width = canvas.width + 'px';
+    canvas.style.height = canvas.height + 'px';
 
     function drawFigure() {
         const { row, col, obj: { color, cells} } = currentFigure;
@@ -63,10 +66,10 @@
         drawTable();
         drawGrid();
 
-        context.fillText(`
-        Score: ${getScore()}
-        Speed: ${gameSpeed}
-        `.trim(), 100, 100);
+        context.fillStyle = 'black';
+        context.font = '40px Calibri';
+        context.fillText(`Score: ${getScore()}`.trim(), getCellX(TETRIS_COLS) + 100, 100);
+        context.fillText(`Speed: ${getSpeed()}`.trim(), getCellX(TETRIS_COLS) + 100, 140);
 
         requestAnimationFrame(draw);
     }
