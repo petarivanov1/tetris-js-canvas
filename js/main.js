@@ -21,6 +21,8 @@ const currentFigure = {
     col: 0
 };
 
+let gameSpeed = 4;
+
 const { getScore, getSpeed } = (function () {
     const figures = [
         {
@@ -188,5 +190,5 @@ const { getScore, getSpeed } = (function () {
     return {
         getScore: () => gameScore,
         getSpeed: () => gameSpeed
-    }
+    };
 }());

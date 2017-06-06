@@ -63,6 +63,11 @@
         drawTable();
         drawGrid();
 
+        context.fillText(`
+        Score: ${getScore()}
+        Speed: ${gameSpeed}
+        `.trim(), 100, 100);
+
         requestAnimationFrame(draw);
     }
 
