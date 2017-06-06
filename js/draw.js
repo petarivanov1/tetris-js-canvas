@@ -19,7 +19,7 @@
 
         for (let i = 0; i < cells.length; i += 1) {
             for (let j = 0; j < cells[i].length; j += 1) {
-                if(!cells[i][j]) {
+                if (!cells[i][j]) {
                     continue;
                 }
 
@@ -62,6 +62,13 @@
         drawFigure();
         drawTable();
         drawGrid();
+
+        context.fillStyle = 'black';
+        context.font = '24pt Calibri';
+        context.fillText(`
+        Score: ${getScore()}
+        Speed: ${getSpeed()}
+                `.trim(), getCellX(TETRIS_COLS + 100), 100);
 
         requestAnimationFrame(draw);
     }

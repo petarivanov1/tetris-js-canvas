@@ -21,9 +21,7 @@ const currentFigure = {
     col: 0
 };
 
-let gameSpeed = 4;
-let gameSpeedOverride = 0;
-(function () {
+const { getScore, getSpeed } = (function () {
     const figures = [
         {
             color: 'red',
@@ -78,6 +76,8 @@ let gameSpeedOverride = 0;
         },
     ];
 
+    let gameSpeed = 4;
+    let gameSpeedOverride = 0;
 
     function getFigure() {
         const index = Math.random() * figures.length | 0;
@@ -103,7 +103,7 @@ let gameSpeedOverride = 0;
         return false;
     }
 
-    let score = 0;
+    let gameScore = 0;
     const scoreSystem = [0, 10, 15, 20, 25];
 
     function update() {
@@ -134,8 +134,6 @@ let gameSpeedOverride = 0;
                 const emptyRow = Array.from({ length: TETRIS_COLS });
                 tetrisTable.unshift(emptyRow);
             }
-
-            score += scoreSystem[filledRows.length];
 
             getFigure();
         }
@@ -183,4 +181,9 @@ let gameSpeedOverride = 0;
             gameSpeedOverride = 0;
         }
     });
+
+    return {
+        getScore: () => gameScore,
+        getSpeed: () => gameSpeed
+    }
 }());
