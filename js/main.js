@@ -80,6 +80,7 @@ const { getScore, getSpeed } = (function () {
 
     let gameSpeed = 4;
     const gameSpeedOverride = 0;
+    let gameOn = true;
 
     function getFigure() {
         const index = Math.random() * figures.length | 0;
@@ -108,13 +109,26 @@ const { getScore, getSpeed } = (function () {
     let gameScore = 0;
     const scoreSystem = [0, 10, 15, 20, 25];
 
+    const startTime = new Date();
+
     function update() {
+        if(!gameOn) {
+            return;
+        }
         let canFall = !checkForCollision(currentFigure.row + 1, currentFigure.col, currentFigure.obj.cells);
 
         if (canFall) {
             currentFigure.row += 1;
+        } else if (currentFigure.row < 0) {
+            gameOn = false;
+            const secondPlayed = (new Date() - startTime) / 1000;
+            alert(`Game over!
+            Your score is ${gameScore}.
+            You lasted ${secondPlayed} seconds.`)
+            return;
         } else {
             const filledRows = [];
+
             for (let i = 0; i < currentFigure.obj.cells.length; i += 1) {
                 const row = currentFigure.row + i;
                 for (let j = 0; j < currentFigure.obj.cells[i].length; j += 1) {
