@@ -77,7 +77,7 @@ const { getScore, getSpeed } = (function () {
     ];
 
     let gameSpeed = 4;
-    let gameSpeedOverride = 0;
+    const gameSpeedOverride = 0;
 
     function getFigure() {
         const index = Math.random() * figures.length | 0;
@@ -135,6 +135,8 @@ const { getScore, getSpeed } = (function () {
                 tetrisTable.unshift(emptyRow);
             }
 
+            gameScore += scoreSystem[filledRows.length];
+
             getFigure();
         }
 
@@ -168,7 +170,8 @@ const { getScore, getSpeed } = (function () {
             const rotateFunc = (ev.key === 'q' ? getLeftRotation : getRightRotation);
             const matrix = rotateFunc(currentFigure.obj.cells);
 
-            const canRotate = currentFigure.col >= 0 && currentFigure.col + matrix[0].length <= TETRIS_COLS &&
+            const canRotate = currentFigure.col >= 0 &&
+                currentFigure.col + matrix[0].length <= TETRIS_COLS &&
                 !checkForCollision(currentFigure.row, currentFigure.col, matrix);
             if (canRotate) {
                 currentFigure.obj.cells = matrix;

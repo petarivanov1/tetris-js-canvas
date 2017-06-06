@@ -63,13 +63,6 @@
         drawTable();
         drawGrid();
 
-        context.fillStyle = 'black';
-        context.font = '24pt Calibri';
-        context.fillText(`
-        Score: ${getScore()}
-        Speed: ${getSpeed()}
-                `.trim(), getCellX(TETRIS_COLS + 100), 100);
-
         requestAnimationFrame(draw);
     }
 
